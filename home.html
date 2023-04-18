@@ -1,0 +1,36 @@
+{% extends 'boilerplate.html' %}
+
+{% block link %}<link rel="stylesheet" href="{{ url_for('static',filename='app.css') }}" />{% endblock %}
+{% block body %}
+<script src="{{ url_for('static',filename='home.js') }}"></script>
+<div class="container">
+    <nav class="navigator">
+        <ul>
+            <li><a href="#">Food tracker</a></li>
+            <li><a href='{{url_for('home')}}'>Home</a></li>
+            <li><a href='{{url_for('add_food')}}'>Add food items</a></li>
+        </ul>
+    </nav>
+    <div class="add_date">
+        <form method="post" action="/home" class="form" id="form" onsubmit="return false">
+            <label for="date" class="date_label" >New Day</label>
+            <input type="date" id="date" class="date" name="date" required title="choose date" autofocus />
+            <input type="submit" value="submit" class="submit" formvalidate/>
+        </form>
+    </div>
+    <div class="food_floor" id="food_floor">
+        {% for data in g.home_data %}
+            <div class="food_tile">
+                <h3>{{ data['date'] }}</h3>
+                <ul>
+                    <li>protein<span>{{ data["tot_protein"] }}</span></li>
+                    <li>carbohydrates<span>{{ data["tot_carbohydrates"] }}</span></li>
+                    <li>fat<span>{{ data["tot_fat"] }}</span></li>
+                    <li>calories<span>{{ data["tot_calories"] }}</span></li>
+                    <li><a href="/view/" style="color:inherit" class="{{ data['date'] }}">View Date</a></li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

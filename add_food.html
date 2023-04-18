@@ -1,0 +1,53 @@
+{% extends 'boilerplate.html' %}
+{% set total_list_data=g.food_data_total[0] %}
+{% block link %}<link rel="stylesheet" href="{{url_for('static',filename='app.css')}}"/>{% endblock %}
+{% block body %}
+<nav class="navigator view_navigator">
+    <ul>
+        <li><a href="#">Food tracker</a></li>
+        <li><a href='{{url_for('home')}}'>Home</a></li>
+        <li><a href='{{url_for('add_food')}}'>Add food items</a></li>
+    </ul>
+</nav>
+
+<div class="add_food_container">
+    <h3>Foods</h3>
+    <form method="post" action="{{url_for('add_food')}}" id="foods" name="foods" onsubmit="return false;" >
+        <label for="food_name">Food Name</label>
+        <input type="text" id="food_name" placeholder="Food name" name="food"  title="enter 20 charcter food name" required autofocus/>
+        <label for="protein">Protein</label>
+        <input type="text" id="protein" placeholder="add protein per 100g" name="protein" min="0" required title="if protein are absent enter 0" type="number"/>
+        <label for="carbohydrates">carbohydrates</label>
+        <input type="text" id="carbohydrates" placeholder="add carbohydrates per 100g" name="carbohydrates" min="0" required title="if carbohydrates are absent enter 0" type="number"/>
+        <label for="fat">Fat</label>
+        <input type="text" id="fat" placeholder="add fat per 100g" type="number" name="fat" min="0" required title="if fat is absent enter 0"/>
+        <label for="calories">calories</label>
+        <input type="text" id="calories" placeholder="add calories per 100g" type="number" name="calories" min="0" required title="if calories is absent enter 0"/>
+        <input type="submit" formvalidate value="add" name="submit" id="submit" />
+    </form>
+    <script src="{{ url_for('static',filename='add_food.js')}}"></script>
+    <div class="food_floor" id="food_floor">
+        <div class="food_tile add_food_tile" id="food_tile">
+            <ul>
+                <li class="special">Total</li>
+                <li id="tot_protein">protein<span>{{ total_list_data.PROTEIN }}</span></li>
+                <li id="tot_carbohydrates">carbohydrates<span>{{ total_list_data.CARBOHYDRATES }}</span></li>
+                <li id="tot_fat">fat<span>{{ total_list_data.FAT }}</span></li>
+                <li id="tot_calories">calories<span>{{ total_list_data.CALORIES }}</span></li>
+            </ul>
+        </div>
+        {% for i in g.food_data : %}
+            <div class="food_tile add_food_tile">
+                <ul>
+                    <li class="special">{{ i.FOOD_NAME }}</li>
+                    <li>protein<span>{{ i.PROTEIN }}</span></li>
+                    <li>carbohydrates<span>{{ i.CARBOHYDRATES }}</span></li>
+                    <li>fat<span>{{ i.FAT }}</span></li>
+                    <li>calories<span>{{ i.CALORIES }}</span></li>
+                </ul>
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

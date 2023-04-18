@@ -1,0 +1,49 @@
+{% extends 'boilerplate.html' %}
+{% block link %}<link rel="stylesheet" href="{{url_for('static',filename='app.css')}}"/>{% endblock %}
+{% if list==1 %}
+    {% set placeholder="first set your fooditems list in addfood section" %}
+{% else %}
+    {% set placeholder="select foodItem" %}
+{% endif %}
+{% block body %}
+<nav class="navigator view_navigator">
+    <ul>
+        <li><a href="#">Food tracker</a></li>
+        <li><a href='{{url_for('home')}}'>Home</a></li>
+        <li><a href='{{url_for('add_food')}}'>Add food items</a></li>
+    </ul>
+</nav>
+    <div class="view_container">
+        <h3>{{ session['get_date'] }}</h3>
+        <form method="post" action="{{url_for('view')}}" id="food_items">
+            <select name="food" form="food_items" aria-placeholder={{ placeholder }}>
+                {% for i in g.food_list %}
+                    <option>{{ i[0] }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="submit"/>
+        </form>
+        <div class="food_floor" id="food_floor">
+            <div class="food_tile">
+                <h3>TOTAl</h3>
+                <ul>
+                    <li>protein<span>{{ g.home_data[0]['tot_protein']  }}</span></li>
+                    <li>carbohydrates<span>{{ g.home_data[0]['tot_carbohydrates']  }}</span></li>
+                    <li>fat<span>{{ g.home_data[0]['tot_fat']  }}</span></li>
+                    <li>calories<span>{{ g.home_data[0]['tot_calories']  }}</span></li>
+                </ul>
+            </div>
+            {% for food_item in g.food_items: %}
+                <div class="food_tile">
+                    <h3>{{ food_item['fooditem'] }}</h3>
+                    <ul>
+                        <li>PROTEIN<span>{{ g.food_items_data[food_item['fooditem']][0]['PROTEIN'] }}</span></li>
+                        <li>CARBOHYDRATES<span>{{ g.food_items_data[food_item['fooditem']][0]['CARBOHYDRATES'] }}</span></li>
+                        <li>FAT<span>{{ g.food_items_data[food_item['fooditem']][0]['FAT'] }}</span></li>
+                        <li>CALORIES<span>{{ g.food_items_data[food_item['fooditem']][0]['CALORIES'] }}</span></li>
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
